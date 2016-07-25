@@ -5,59 +5,28 @@ use bright\theme\yii2\aceadmin\widgets\Sidebar;
 $menus = [
     'items' => [
         [
-            'label' => '网站设置',
-            'url' => [
-                'website-set/update'
-            ],
-            'visible' => ! Yii::$app->user->isGuest
-        ],
-        [
-            'label' => '导航管理',
-            'url' => [
-                'navigation/index'
-            ],
-            'visible' => ! Yii::$app->user->isGuest
-        ],
-        [
-            'label' => '内容管理',
-            'url' => [
-                'content/index'
-            ],
-            'visible' => ! Yii::$app->user->isGuest
-        ],
-        [
-           'label' => '分类管理',
-           'url' => ['category/index'],
-           'visible' => ! Yii::$app->user->isGuest
-        ],
-        [
             'label' => '用户管理',
             'url' => ['user/index'],
-            'visible' => ( !Yii::$app->user->isGuest &&  array_key_exists('admin', Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId())) )
+            'visible' => !Yii::$app->user->isGuest
         ],
         [
-        'label' => '首页设置',
-        'url' => ['index-set/update'],
-        'visible' => ! Yii::$app->user->isGuest
+            'label' => '系统设置',
+            'visible' => !Yii::$app->user->isGuest,
+            'items' => [
+                [
+                    'label' => '常规设置',
+                    'url' => ['user/index'],
+                    'visible' => !Yii::$app->user->isGuest
+                ],
+                [
+                    'label' => '参数设置',
+                    'url' => ['user/index'],
+                    'visible' => !Yii::$app->user->isGuest
+                ]
+                
+            ]
+//             'visible' => ( !Yii::$app->user->isGuest &&  array_key_exists('admin', Yii::$app->authManager->getRolesByUser(Yii::$app->user->getId())) )
         ],
-        
-        [
-        'label' => '轮播图设置',
-        'url' => ['carousel/index'],
-        'visible' => ! Yii::$app->user->isGuest
-        ],
-        
-        [
-        'label' => '图片管理',
-        'url' => ['pictures/index'],
-        'visible' => ! Yii::$app->user->isGuest
-        ],
-     //   [
-     //   'label' => '图片管理',
-      //  'url' => ['pictures/index'],
-     //   'visible' => ! Yii::$app->user->isGuest
-     //   ],
-        
         [
             'label' => 'Login',
             'url' => [
@@ -67,7 +36,7 @@ $menus = [
         ]
     ],
     'options' => []
-]?> 
+]?>
 <!--   set this to nav-tab to get tab-styled navigation -->
 <div class="sidebar responsive" id="sidebar">
 	<script type="text/javascript">

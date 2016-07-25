@@ -5,6 +5,7 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Url;
 use bright\theme\yii2\aceadmin\widgets\Breadcrumbs;
+use common\widgets\Alert;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -53,7 +54,9 @@ AppAsset::register($this);
 					<!-- #section:basics/navbar.user_menu -->
 					<li class="light-blue"><a data-toggle="dropdown" href="#"
 						class="dropdown-toggle">
+							<img class="nav-user-photo" src="../avatars/user.jpg" alt="Jason's Photo" />
     						<?php if (\Yii::$app->user->isGuest):?>
+    						<span class="user-info"></span>
     						<?php else:?>
                             <span class="user-info"> <small>你好,</small> <?=Yii::$app->user->identity->username ?> </span>
                             <?php endif;?>
@@ -84,7 +87,7 @@ AppAsset::register($this);
 		<!-- /.navbar-container -->
 	</div>
 	<div class="main-container" id="main-container">
-
+		
         <?= $this->render('@app/views/layouts/partials/sidebar.php', ['currentItem' => isset($this->params['currentItem'])?$this->params['currentItem']:''])?>
 
 
@@ -92,6 +95,11 @@ AppAsset::register($this);
 			<div class="main-content-inner">
                 <?=Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [], ])?>
                 <div class="page-content">
+                	<div class="row">
+    					<div class="col-xs-12">
+                		<?= Alert::widget();?>
+                		</div>
+                	</div>
 					<div class="row">
     					<div class="col-xs-12">
                             <!-- PAGE CONTENT BEGINS -->
