@@ -1,6 +1,6 @@
 <?php
 use yii\helpers\Url;
-use bright\theme\yii2\aceadmin\widgets\Sidebar;
+use bright_tech\yii2theme\aceadmin\widgets\Sidebar;
 
 $menus = [
     'items' => [

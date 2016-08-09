@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Url;
-use bright\theme\yii2\aceadmin\widgets\Breadcrumbs;
+use bright_tech\yii2theme\aceadmin\widgets\Breadcrumbs;
 use common\widgets\Alert;
 
 /* @var $this \yii\web\View */
