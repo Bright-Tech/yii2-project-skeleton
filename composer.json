@@ -19,7 +19,8 @@
         "yiisoft/yii2-bootstrap": "*",
         "yiisoft/yii2-swiftmailer": "*",
         "yii2tech/ar-softdelete": "*",
-        "yii2tech/install": "*"
+        "yii2tech/install": "*",
+        "mdmsoft/yii2-admin": "2.x-dev"
     },
     "require-dev": {
         "codeception/base": "^2.2.3",

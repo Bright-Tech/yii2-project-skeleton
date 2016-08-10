@@ -6,6 +6,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 
 /**
  * User model
@@ -17,6 +18,7 @@ use yii\web\IdentityInterface;
  * @property string $email
  * @property string $auth_key
  * @property integer $status
+ * @property string  $name
  * @property integer $created_at
  * @property integer $updated_at
  * @property string $password write-only password
@@ -25,14 +27,27 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
-
-
+    public $repeat_password;
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
         return '{{%user}}';
+    }
+    public function attributeLabels()
+    {
+        return [
+            'username'=>'登录名',
+            'password_hash'=>'用户密码',
+            'repeat_password'=>'密码确认',
+            'password_reset_token'=>'密码重置验证',
+            'email'=>'邮箱',
+            'created_at'=>'创建时间',
+            'updated_at'=>'修改时间',
+            'name'=>'名称',
+            'status'=>'状态'
+        ];
     }
 
     /**
@@ -42,6 +57,12 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return [
             TimestampBehavior::className(),
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::className(),
+                'softDeleteAttributeValues' => [
+                    'is_deleted' => 1
+                ],
+            ],
         ];
     }
 
@@ -53,6 +74,17 @@ class User extends ActiveRecord implements IdentityInterface
         return [
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            ['name','required'],
+            ['id','safe'],
+            ['username', 'filter', 'filter' => 'trim'],
+            ['email','email'],
+            ['username', 'required','message' => '用户名不能为空'],
+            ['username', 'unique', 'targetClass' => '\common\models\User', 'message' => '用户名已存在'],
+            ['email', 'unique', 'targetClass' => '\common\models\User', 'message' => '该邮箱已被使用'],
+            ['username', 'string', 'min' => 2, 'max' => 255],
+            ['password_hash', 'required','message' => '密码不能为空'],
+            ['password_hash', 'string', 'min' => 6],
+            ['repeat_password', 'compare', 'compareAttribute'=>'password_hash', 'message'=>'与密码不符请重新输入']
         ];
     }
 
@@ -186,4 +218,48 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public function beforeUpdate($insert)
+    {
+        echo"haha" ;
+        return true;
+    }
+
+
+    public function adduser()
+    {
+        if (!$this->validate()) {
+            return null;
+        }
+        $user = new User();
+        $user->username = $this->username;
+        $user->email = $this->email;
+        $user->setPassword($this->password_hash);
+        $user->generateAuthKey();
+        $user->name=$this->name;
+      //   return $user;
+      return $user->save() ? $user : null;
+    }
+    public function updateuser($id)
+    {
+        if (!$this->validate()) {
+            return null;
+        }
+        $user=User::findOne($id);
+        if ($this->password_hash){
+            $user->setPassword($this->password_hash);
+        }
+        if ($this->username){
+            $user->setPassword($this->username);
+        }
+        $user->email = $this->email;
+        $user->generateAuthKey();
+        $user->name=$this->name;
+        return $user->save() ? $user : null;
+    }
+    public static function getstatus($m){
+            $status=['0'=>'不正常','10'=>'正常'];
+            return $status[$m];
+    }
+
 }
