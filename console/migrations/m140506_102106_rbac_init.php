@@ -42,9 +42,10 @@ class m140506_102106_rbac_init extends \yii\db\Migration
      */
     public function up()
     {
+
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
-
+        
         $tableOptions = null;
         if ($this->db->driverName === 'mysql') {
             // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
@@ -134,6 +135,7 @@ class m140506_102106_rbac_init extends \yii\db\Migration
      */
     public function down()
     {
+
         $authManager = $this->getAuthManager();
         $this->db = $authManager->db;
 
