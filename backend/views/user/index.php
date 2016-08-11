@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use common\models\User;
+use bright_tech\yii2theme\aceadmin\widgets\PageHeader;
+use yii\base\Widget;
 
 /* @var $this yii\web\View */
 /* @var $searchModel common\models\UserSearch */
@@ -13,11 +15,11 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <?=PageHeader::widget(['title'=>$this->title])?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('添加新用户', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('<i class="ace-icon glyphicon glyphicon-plus"></i>添加新用户', ['create'], ['class' => 'btn btn-info btn-xs']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
