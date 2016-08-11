@@ -38,7 +38,7 @@ $menus = [
     'options' => []
 ]?>
 <!--   set this to nav-tab to get tab-styled navigation -->
-<div class="sidebar responsive" id="sidebar">
+<div class="sidebar responsive sidebar-fixed sidebar-scroll" id="sidebar">
 	<script type="text/javascript">
 		try{ace.settings.check('sidebar' , 'fixed')}catch(e){}
 	</script>

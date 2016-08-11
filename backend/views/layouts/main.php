@@ -26,7 +26,7 @@ AppAsset::register($this);
 <body class="no-skin">
     <?php $this->beginBody()?>
         		<!-- #section:basics/navbar.layout -->
-	<div id="navbar" class="navbar navbar-default">
+	<div id="navbar" class="navbar navbar-default navbar-fixed-top">
 		<script type="text/javascript">
 				try{ace.settings.check('navbar' , 'fixed')}catch(e){}
 			</script>
@@ -93,7 +93,7 @@ AppAsset::register($this);
 
     	<div class="main-content">
 			<div class="main-content-inner">
-                <?=Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [], ])?>
+                <?=Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [], 'class'=>'breadcrumbs breadcrumbs-fixed'])?>
                 <div class="page-content">
                 	<div class="row">
     					<div class="col-xs-12">

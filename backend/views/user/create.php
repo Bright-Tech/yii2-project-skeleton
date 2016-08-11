@@ -1,6 +1,8 @@
 <?php
 
 use yii\helpers\Html;
+use bright_tech\yii2theme\aceadmin\widgets\PageHeader;
+use yii\base\Widget;
 
 
 /* @var $this yii\web\View */
@@ -10,14 +12,12 @@ $this->title = '添加用户';
 $this->params['breadcrumbs'][] = ['label' => '用户管理', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="user-create">
-<?if(!empty($errors)){
-    var_dump($errors);
-}?>
-    <h1><?= Html::encode($this->title) ?></h1>
-
+<?=PageHeader::widget(['title'=>$this->title])?>
+<div class="row user-form">
+	<div class="col-xs-12">
     <?= $this->render('_form', [
         'model' => $model,
     ]) ?>
-
+    </div>
 </div>
+
