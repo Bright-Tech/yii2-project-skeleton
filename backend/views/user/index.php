@@ -32,7 +32,7 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute'=>'status',
                 'value'=>function($model){
-                    return User::getstatus($model->status);
+                    return \Yii::t('backend', 'UserStatus:'.$model->status);
                 }
             ],
              'email:email',
