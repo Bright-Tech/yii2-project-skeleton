@@ -11,6 +11,11 @@ $menus = [
 			'visible' =>!Yii::$app->user->isGuest&&Yii::$app->user->can('super'),
         ],
         [
+        'label' => '管理员设置',
+        'url' => ['admin/index'],
+        'visible' => !Yii::$app->user->isGuest
+        ],
+        [
             'label' => '系统设置',
             'visible' => !Yii::$app->user->isGuest,
             'items' => [
