@@ -14,7 +14,7 @@ class m130524_201442_init extends Migration
         }
 
         /**
-         *
+         *创建用户表
          */
         $this->createTable('{{%user}}', [
             'id' => $this->primaryKey(),
@@ -44,6 +44,23 @@ class m130524_201442_init extends Migration
         ], $tableOptions);
         
         /**
+         *创建管理员表
+         */
+        $this->createTable('{{%admin}}', [
+            'id' => $this->primaryKey(),
+            'username' => $this->string()->notNull()->unique(),
+            'auth_key' => $this->string(32)->notNull(),
+            'password_hash' => $this->string()->notNull(),
+            'password_reset_token' => $this->string()->unique(),
+            'name' => $this->string()->notNull(),
+            'email' => $this->string()->notNull()->unique(),
+            'status' => $this->smallInteger()->notNull()->defaultValue(10),
+            'created_at' => $this->integer()->notNull(),
+            'updated_at' => $this->integer()->notNull(),
+            'is_deleted' => $this->integer()->notNull()->defaultValue(0),
+        ], $tableOptions);
+        
+        /**
          *  property
          */
 //         $this->createTable('{{%property}}', [
@@ -57,7 +74,7 @@ class m130524_201442_init extends Migration
         
         
         //添加初始管理员
-        $this->insert('{{%user}}', [
+        $this->insert('{{%admin}}', [
             'username' => 'admin',
             'password_hash' => '$2y$13$q65XnzBK3dvClQnLvGjywuCBMJF/LsnhkS9k52uJQ9qvCd2UDO32u',
             'password_reset_token' => '',
