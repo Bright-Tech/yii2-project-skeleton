@@ -7,7 +7,8 @@ $menus = [
         [
             'label' => '用户管理',
             'url' => ['user/index'],
-            'visible' => !Yii::$app->user->isGuest
+          //  'visible' => !Yii::$app->user->isGuest,
+			'visible' =>!Yii::$app->user->isGuest&&Yii::$app->user->can('super'),
         ],
         [
             'label' => '系统设置',

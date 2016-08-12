@@ -67,7 +67,16 @@ class UserController extends Controller
     public function actionCreate()
     {
         $model = new User();
-        if ($model->load(Yii::$app->request->post())&&$user=$model->adduser()) {
+        $post=Yii::$app->request->post();
+        if ($model->load($post)&&$user=$model->adduser()) {
+            //   var_dump($post);die;
+            if(!empty($post['rabc'])){
+                foreach ($post['rabc'] as $value){
+                    $auth=yii::$app->authManager;
+                    $date=$auth->getRole($value);
+                    $auth->assign($date,$user->id);
+                };
+            }
                 return $this->redirect(['view', 'id' => $user->id]);
            // return $this->redirect(['view', 'id' => $model->id]);
         } else {
@@ -86,7 +95,16 @@ class UserController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        if ($model->load(Yii::$app->request->post())&& $model->updateuser($id)) {
+        $post=Yii::$app->request->post();
+        if ($model->load($post)&& $model->updateuser($id)) {
+            if(!empty($post['rabc'])){
+                $auth=yii::$app->authManager;
+                $auth->revokeAll($model->id);
+                foreach ($post['rabc'] as $value){
+                    $date=$auth->getRole($value);
+                    $auth->assign($date,$model->id);
+                };
+            }
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('update', [
