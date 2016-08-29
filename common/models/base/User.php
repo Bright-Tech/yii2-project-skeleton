@@ -226,37 +226,6 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
 
-    public function adduser()
-    {
-        if (!$this->validate()) {
-            return null;
-        }
-        $user = new User();
-        $user->username = $this->username;
-        $user->email = $this->email;
-        $user->setPassword($this->password_hash);
-        $user->generateAuthKey();
-        $user->name=$this->name;
-      //   return $user;
-      return $user->save() ? $user : null;
-    }
-    public function updateuser($id)
-    {
-        if (!$this->validate()) {
-            return null;
-        }
-        $user=User::findOne($id);
-        if ($this->password_hash){
-            $user->setPassword($this->password_hash);
-        }
-        if ($this->username){
-            $user->setPassword($this->username);
-        }
-        $user->email = $this->email;
-        $user->generateAuthKey();
-        $user->name=$this->name;
-        return $user->save() ? $user : null;
-    }
     public static function getstatus($m){
             $status=['0'=>'不正常','10'=>'正常'];
             return $status[$m];

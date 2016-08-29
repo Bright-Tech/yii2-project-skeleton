@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\models\base;
+namespace common\models\base;
 
 use Yii;
 
@@ -26,7 +26,7 @@ class Admin extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'admin';
+        return 'bgt_admin';
     }
 
     /**
