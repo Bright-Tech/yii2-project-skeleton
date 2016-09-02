@@ -16,6 +16,11 @@ $menus = [
         'visible' => !Yii::$app->user->isGuest
         ],
         [
+        'label' => '组织管理',
+        'url' => ['organization/index'],
+        'visible' => !Yii::$app->user->isGuest
+        ],
+        [
             'label' => '系统设置',
             'visible' => !Yii::$app->user->isGuest,
             'items' => [

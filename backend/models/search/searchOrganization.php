@@ -1,16 +1,16 @@
 <?php
 
-namespace common\models\search;
+namespace backend\models\search;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use common\models\base\Admin;
+use common\models\base\Organization;
 
 /**
- * searchAdmin represents the model behind the search form of `backend\models\base\Admin`.
+ * searchOrganization represents the model behind the search form of `common\models\base\Organization`.
  */
-class searchAdmin extends Admin
+class searchOrganization extends Organization
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class searchAdmin extends Admin
     public function rules()
     {
         return [
-            [['id', 'status', 'created_at', 'updated_at', 'is_deleted'], 'integer'],
-            [['username', 'auth_key', 'password_hash', 'password_reset_token', 'name', 'email'], 'safe'],
+            [['id', 'province_id', 'city_id', 'district_id', 'created_by', 'created_at', 'updated_at'], 'integer'],
+            [['name', 'province_cn', 'city_cn', 'district_cn', 'better_address', 'contact'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class searchAdmin extends Admin
      */
     public function search($params)
     {
-        $query = Admin::find();
+        $query = Organization::find();
 
         // add conditions that should always apply here
 
@@ -60,18 +60,20 @@ class searchAdmin extends Admin
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
+            'province_id' => $this->province_id,
+            'city_id' => $this->city_id,
+            'district_id' => $this->district_id,
+            'created_by' => $this->created_by,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
-            'is_deleted' => $this->is_deleted,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'auth_key', $this->auth_key])
-            ->andFilterWhere(['like', 'password_hash', $this->password_hash])
-            ->andFilterWhere(['like', 'password_reset_token', $this->password_reset_token])
-            ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'name', $this->name])
+            ->andFilterWhere(['like', 'province_cn', $this->province_cn])
+            ->andFilterWhere(['like', 'city_cn', $this->city_cn])
+            ->andFilterWhere(['like', 'district_cn', $this->district_cn])
+            ->andFilterWhere(['like', 'better_address', $this->better_address])
+            ->andFilterWhere(['like', 'contact', $this->contact]);
 
         return $dataProvider;
     }

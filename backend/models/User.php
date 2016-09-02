@@ -1,7 +1,7 @@
 <?php
 namespace backend\models;
 
-use common\models\base\Admin;
+use backend\models\base\Admin;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
