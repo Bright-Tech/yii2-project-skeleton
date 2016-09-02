@@ -73,9 +73,9 @@ AppAsset::register($this);
  -->
 							<li class="divider"></li>
 							
-<!--							<li><a href="--><?//=Url::to(['user/update' , 'id' => Yii::$app->user->identity->id])?><!--"> <i-->
-<!--									class="ace-icon fa fa-users"></i> 个人中心-->
-<!--							</a></li>-->
+							<li><a href="<?= Url::to(['admin/update' , 'id' => Yii::$app->user->identity->id])?>"> <i
+									class="ace-icon fa fa-users"></i> 个人中心
+							</a></li>
 
 							<li><a href="<?=Url::to(['site/logout'])?>"> <i
 									class="ace-icon fa fa-power-off"></i> 登出

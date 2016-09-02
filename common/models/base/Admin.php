@@ -26,7 +26,7 @@ class Admin extends \yii\db\ActiveRecord
      */
     public static function tableName()
     {
-        return 'bgt_admin';
+        return 'admin';
     }
 
     /**
