@@ -8,6 +8,7 @@ use backend\models\search\searchOrganization;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use common\models\District;
 
 /**
  * OrganizationController implements the CRUD actions for Organization model.
@@ -64,12 +65,27 @@ class OrganizationController extends Controller
     public function actionCreate()
     {
         $model = new Organization();
+        $provincesList = District::getProvinceList();
+        $citiesList = [];
+        $districtsList = [];
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($data = Yii::$app->request->post()) {
+            $model->load($data);
+            $model->province_cn = District::findOne($data['province_id'])->name;
+            $model->city_cn = District::findOne($data['city_id'])->name;
+            $model->district_cn = District::findOne($data['district_id'])->name;
+            if ($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }else {
+                return $this->goBack()->with('error' , $model->getErrors());
+            }
+            
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'provincesList' => $provincesList,
+                'citiesList' => $citiesList,
+                'districtsList' => $districtsList,
             ]);
         }
     }
@@ -83,12 +99,26 @@ class OrganizationController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $provincesList = District::getProvinceList();
+        $citiesList = District::getCitiesList($model->province_id);
+        $districtsList = District::getDistrictsList($model->city_id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($data = Yii::$app->request->post()) {
+            $model->load($data);
+            $model->province_cn = District::findOne($data['province_id'])->name;
+            $model->city_cn = District::findOne($data['city_id'])->name;
+            $model->district_cn = District::findOne($data['district_id'])->name;
+            if ($model->save()){
+                return $this->redirect(['view', 'id' => $model->id]);
+            }else {
+                return $this->goBack()->with('error' , $model->getErrors());
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'provincesList' => $provincesList,
+                'citiesList' => $citiesList,
+                'districtsList' => $districtsList,
             ]);
         }
     }
@@ -120,5 +150,31 @@ class OrganizationController extends Controller
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
+    }
+    
+    /**
+     * 省、市、区联动
+     * @return \Response
+     */
+    public function postCityByProvince(){
+        $provinceId = $_POST['id'];
+        if ($provinceId != null) {
+            $cities = District::getCitiesList($provinceId);
+        }else {
+            $cities = [];
+        }
+    
+        return json_encode($cities);
+    }
+    
+    public function postDistrictByCity(){
+        $cityId = $_POST['id'];
+        if ($cityId != null){
+            $districts = District::getDistrictsList($cityId);
+        }else {
+            $districts = [];
+        }
+    
+        return json_encode($districts);
     }
 }

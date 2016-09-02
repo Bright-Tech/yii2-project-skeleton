@@ -45,7 +45,7 @@ class Organization extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created_at', 'updated_at'], 'required'],
+            [['name', 'created_at', 'updated_at', 'province_id', 'city_id', 'district_id'], 'required'],
             [['province_id', 'city_id', 'district_id', 'created_by', 'created_at', 'updated_at'], 'integer'],
             [['name', 'province_cn', 'city_cn', 'district_cn', 'better_address', 'contact'], 'string', 'max' => 255],
         ];
@@ -58,18 +58,18 @@ class Organization extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name' => 'Name',
-            'province_id' => 'Province ID',
-            'province_cn' => 'Province Cn',
-            'city_id' => 'City ID',
-            'city_cn' => 'City Cn',
-            'district_id' => 'District ID',
-            'district_cn' => 'District Cn',
-            'better_address' => 'Better Address',
-            'contact' => 'Contact',
-            'created_by' => 'Created By',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'name' => '名称',
+            'province_id' => '省份ID',
+            'province_cn' => '省份名称',
+            'city_id' => '城市ID',
+            'city_cn' => '城市名称',
+            'district_id' => '县区ID',
+            'district_cn' => '县区名称',
+            'better_address' => '详细地址',
+            'contact' => '联系人',
+            'created_by' => '创建人',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
         ];
     }
 }
