@@ -45,7 +45,7 @@ class Organization extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'created_at', 'updated_at', 'province_id', 'city_id', 'district_id'], 'required'],
+            [['name', 'province_id', 'city_id', 'district_id'], 'required'],
             [['province_id', 'city_id', 'district_id', 'created_by', 'created_at', 'updated_at'], 'integer'],
             [['name', 'province_cn', 'city_cn', 'district_cn', 'better_address', 'contact'], 'string', 'max' => 255],
         ];
@@ -59,11 +59,11 @@ class Organization extends \yii\db\ActiveRecord
         return [
             'id' => 'ID',
             'name' => '名称',
-            'province_id' => '省份ID',
+            'province_id' => '省份',
             'province_cn' => '省份名称',
-            'city_id' => '城市ID',
+            'city_id' => '城市',
             'city_cn' => '城市名称',
-            'district_id' => '县区ID',
+            'district_id' => '县区',
             'district_cn' => '县区名称',
             'better_address' => '详细地址',
             'contact' => '联系人',
