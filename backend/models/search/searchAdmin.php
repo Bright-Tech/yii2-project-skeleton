@@ -5,7 +5,7 @@ namespace backend\models\search;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use backend\models\base\Admin;
+use backend\models\Admin;
 
 /**
  * searchAdmin represents the model behind the search form of `backend\models\base\Admin`.
