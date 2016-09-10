@@ -75,7 +75,7 @@ class AdminController extends Controller
     {
         $model = new Admin();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post()) && $model = $model->createAdmin()) {
             return $this->redirect(['view', 'id' => $model->id]);
         } else {
             return $this->render('create', [
@@ -103,6 +103,24 @@ class AdminController extends Controller
         }
     }
 
+    public function actionPassword($id)
+    {
+        $model=$this->findModel($id);
+        if (Yii::$app->request->isPost){
+            if(!Yii::$app->security->validatePassword(Yii::$app->request->post()['Admin']['password_old'],$model->password_hash)){
+                Yii::$app->session->setFlash('error', '旧密码输入错误');
+                return $this->render('password',['model'=>$model]);
+            }else{
+                $model->password_hash=Yii::$app->security->generatePasswordHash(Yii::$app->request->post()['Admin']['password_hash']);
+                $model->save();
+                Yii::$app->session->setFlash('success', '修改成功');
+                return $this->redirect(['index']);
+            }
+        }else{
+            return $this->render('password',['model'=>$model]);
+        }
+
+    }
     /**
      * Deletes an existing Admin model.
      * If deletion is successful, the browser will be redirected to the 'index' page.

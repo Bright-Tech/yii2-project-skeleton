@@ -14,26 +14,21 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'username')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'auth_key')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'password_hash')->textInput(['maxlength' => true]) ?>
-
-    <?= $form->field($model, 'password_reset_token')->textInput(['maxlength' => true]) ?>
-
     <?= $form->field($model, 'name')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'email')->textInput(['maxlength' => true]) ?>
+    <?php if ($model->isNewRecord):?>
+    <?= $form->field($model, 'password_hash')->passwordInput() ?>
+ 
+    <?php else:?>
+        <?= $form->field($model, 'status')->radioList(\backend\models\Admin::getuserStatus()) ?>
+    <?php endif;?>
 
-    <?= $form->field($model, 'status')->textInput() ?>
 
-    <?= $form->field($model, 'created_at')->textInput() ?>
 
-    <?= $form->field($model, 'updated_at')->textInput() ?>
-
-    <?= $form->field($model, 'is_deleted')->textInput() ?>
 
     <div class="form-group">
-        <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
+        <?= Html::submitButton($model->isNewRecord ? '确认添加' : '确认修改', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

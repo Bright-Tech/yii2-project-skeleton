@@ -21,6 +21,8 @@ use Yii;
  */
 class Admin extends \yii\db\ActiveRecord
 {
+    public $password_old;
+    public $repeat_password;
     /**
      * @inheritdoc
      */
@@ -35,13 +37,14 @@ class Admin extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['username', 'auth_key', 'password_hash', 'name', 'email', 'created_at', 'updated_at'], 'required'],
+            [['username', 'auth_key', 'password_hash', 'name', 'email'], 'required'],
             [['status', 'created_at', 'updated_at', 'is_deleted'], 'integer'],
-            [['username', 'password_hash', 'password_reset_token', 'name', 'email'], 'string', 'max' => 255],
+            [['username', 'password_hash','repeat_password', 'password_reset_token', 'name', 'email'], 'string', 'max' => 255],
             [['auth_key'], 'string', 'max' => 32],
             [['username'], 'unique'],
             [['email'], 'unique'],
             [['password_reset_token'], 'unique'],
+            ['repeat_password', 'compare', 'compareAttribute'=>'password_hash', 'message'=>'与密码不符请重新输入']
         ];
     }
 
@@ -51,16 +54,18 @@ class Admin extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'username' => 'Username',
+            'id' => '用户ID',
+            'username' => '登录名',
+            'password_old'=>'旧密码',
+            'repeat_password'=>'请再输入一次',
             'auth_key' => 'Auth Key',
-            'password_hash' => 'Password Hash',
+            'password_hash' => '用户密码',
             'password_reset_token' => 'Password Reset Token',
-            'name' => 'Name',
-            'email' => 'Email',
-            'status' => 'Status',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'name' => '昵称',
+            'email' => '用户邮箱',
+            'status' => '用户状态',
+            'created_at' => '创建时间',
+            'updated_at' => '更新时间',
             'is_deleted' => 'Is Deleted',
         ];
     }

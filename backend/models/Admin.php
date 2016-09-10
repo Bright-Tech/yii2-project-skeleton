@@ -4,6 +4,7 @@ namespace backend\models;
 use Yii;
 use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
+use yii2tech\ar\softdelete\SoftDeleteBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -41,6 +42,12 @@ class Admin extends \backend\models\base\Admin implements IdentityInterface
     {
         return [
             TimestampBehavior::className(),
+            'softDeleteBehavior' => [
+                'class' => SoftDeleteBehavior::className(),
+                'softDeleteAttributeValues' => [
+                    'isDeleted' => true
+                ],
+            ],
         ];
     }
 
@@ -185,4 +192,19 @@ class Admin extends \backend\models\base\Admin implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+
+    public static function getuserStatus(){
+        return array('0'=>'潜水','10'=>'正常');
+    }
+
+    public function createAdmin(){
+        $this->generateAuthKey();
+        $model=$this->save();
+        return $model?$model:false;
+    }
+
+    /**
+     * @param \yii\validators\Validator[] $activeValidators
+     */
+   
 }
