@@ -55,11 +55,7 @@ AppAsset::register($this);
 					<li class="light-blue"><a data-toggle="dropdown" href="#"
 						class="dropdown-toggle">
 							<img class="nav-user-photo" src="../avatars/user.jpg" alt="Jason's Photo" />
-    						<?php if (\Yii::$app->user->isGuest):?>
-    						<span class="user-info"></span>
-    						<?php else:?>
                             <span class="user-info"> <small>你好,</small> <?=Yii::$app->user->identity->username ?> </span>
-                            <?php endif;?>
     					</a>
 						<ul
 							class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
