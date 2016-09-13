@@ -26,7 +26,7 @@ $menus = [
                 ],
                 [
                     'label' => '系统设置',
-                    'url' => ['user/index'],
+                    'url' => ['system/index'],
                     'visible' => Yii::$app->user->can('manage system property')
                 ]
 

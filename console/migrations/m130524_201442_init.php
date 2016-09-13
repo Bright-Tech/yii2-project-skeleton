@@ -29,7 +29,7 @@ class m130524_201442_init extends Migration
             'updated_at' => $this->integer()->notNull(),
             'is_deleted' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
-        
+
         /**
          *  property
          */
@@ -38,12 +38,13 @@ class m130524_201442_init extends Migration
             'type' => $this->string(255)->notNull(),
             'key' => $this->string(255)->notNull(),
             'value' => $this->string(255)->notNull(),
+            'label' => $this->string(255)->notNull(),
             'sort' => $this->integer()->notNull()->defaultValue(0),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
             'is_deleted' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
-        
+
         /**
          *创建管理员表
          */
@@ -60,7 +61,7 @@ class m130524_201442_init extends Migration
             'updated_at' => $this->integer()->notNull(),
             'is_deleted' => $this->integer()->notNull()->defaultValue(0),
         ], $tableOptions);
-        
+
         /**
          *  property
          */
@@ -72,8 +73,8 @@ class m130524_201442_init extends Migration
 //             'created_at' => $this->integer()->notNull(),
 //             'updated_at' => $this->integer()->notNull(),
 //         ], $tableOptions);
-        
-        
+
+
         //添加初始管理员
         $this->insert('{{%admin}}', [
             'username' => 'admin',
@@ -86,6 +87,26 @@ class m130524_201442_init extends Migration
             'updated_at' => '1460181562',
             'is_deleted' => '0',
             'name' => '超级管理员',
+        ]);
+        $this->insert('{{%property}}', [
+            'type' => 'sys-config',
+            'key' => 'backend-title',
+            'value' => '后台管理模板',
+            'label' => '后台标题',
+            'sort' => 1,
+            'created_at' => '1460181562',
+            'updated_at' => '1460181562',
+            'is_deleted' => '0',
+        ]);
+        $this->insert('{{%property}}', [
+            'type' => 'sys-config',
+            'key' => 'img-server',
+            'value' => '图片服务器',
+            'label' => '图片服务器地址',
+            'sort' => 2,
+            'created_at' => '1460181562',
+            'updated_at' => '1460181562',
+            'is_deleted' => '0',
         ]);
     }
 
