@@ -103,6 +103,7 @@ class AdminController extends Controller
         }
     }
 
+
     public function actionPassword($id)
     {
         $model=$this->findModel($id);
@@ -118,6 +119,26 @@ class AdminController extends Controller
             }
         }else{
             return $this->render('password',['model'=>$model]);
+        }
+
+    }
+
+    /**
+     * Updates an existing Admin model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionProfile($id)
+    {
+        $model = $this->findModel($id);
+
+        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('profile', [
+                'model' => $model,
+            ]);
         }
 
     }
