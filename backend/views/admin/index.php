@@ -2,6 +2,7 @@
 
 use yii\helpers\Html;
 use yii\grid\GridView;
+use bright_tech\yii2theme\aceadmin\widgets\PageHeader;
 
 /* @var $this yii\web\View */
 /* @var $searchModel backend\models\search\searchAdmin */
@@ -12,12 +13,13 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="admin-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+
+    <?php PageHeader::begin(['title'=>$this->title, 'subTitle'=>'test'])?>
+    <?= Html::a('<i class="ace-icon glyphicon glyphicon-plus"></i>添加管理员', ['create'], ['class' => 'btn btn-info btn-link pull-right']) ?>
+    <?php PageHeader::end()?>
+
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('创建管理员', ['create'], ['class' => 'btn btn-success']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

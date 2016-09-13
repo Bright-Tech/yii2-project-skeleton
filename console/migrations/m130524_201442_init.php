@@ -36,6 +36,7 @@ class m130524_201442_init extends Migration
         $this->createTable('{{%property}}', [
             'id' => $this->primaryKey(),
             'type' => $this->string(255)->notNull(),
+            'key' => $this->string(255)->notNull(),
             'value' => $this->string(255)->notNull(),
             'sort' => $this->integer()->notNull()->defaultValue(0),
             'created_at' => $this->integer()->notNull(),

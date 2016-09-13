@@ -6,6 +6,7 @@ use yii\bootstrap\NavBar;
 use yii\helpers\Url;
 use bright_tech\yii2theme\aceadmin\widgets\Breadcrumbs;
 use common\widgets\Alert;
+use common\models\Property;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -40,7 +41,7 @@ AppAsset::register($this);
                 <!-- #section:basics/navbar.layout.brand -->
                 <a href="#" class="navbar-brand">
                     <small><i class="fa fa-leaf"></i>
-                        崇光内容管理系统
+                        <?=Property::getProperty('backend-title')?>
                     </small>
                 </a>
 

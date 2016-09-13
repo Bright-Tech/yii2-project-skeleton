@@ -30,13 +30,13 @@ class Organization extends \yii\db\ActiveRecord
             TimestampBehavior::className(),
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'organization';
+        return '{{%organization}}';
     }
 
     /**
