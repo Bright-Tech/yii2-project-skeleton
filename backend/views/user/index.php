@@ -15,12 +15,12 @@ $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="user-index">
 
-    <?=PageHeader::widget(['title'=>$this->title])?>
+
+    <?php PageHeader::begin(['title'=>$this->title, 'subTitle'=>'test'])?>
+    <?= Html::a('<i class="ace-icon glyphicon glyphicon-plus"></i>添加新用户', ['create'], ['class' => 'btn btn-info btn-link pull-right']) ?>
+    <?php PageHeader::end()?>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
-    <p>
-        <?= Html::a('<i class="ace-icon glyphicon glyphicon-plus"></i>添加新用户', ['create'], ['class' => 'btn btn-info btn-xs']) ?>
-    </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

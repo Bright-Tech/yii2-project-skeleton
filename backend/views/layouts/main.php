@@ -72,7 +72,7 @@ AppAsset::register($this);
                             </a></li>
  -->
                             <li>
-                                <a href="<?= Url::to(['admin/update', 'id' => Yii::$app->user->identity->id]) ?>">
+                                <a href="<?= Url::to(['admin/profile', 'id' => Yii::$app->user->identity->id]) ?>">
                                     <i class="ace-icon fa fa-user"></i> 个人中心
                                 </a>
                             </li>
