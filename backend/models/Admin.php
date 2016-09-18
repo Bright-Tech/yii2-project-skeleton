@@ -27,12 +27,13 @@ class Admin extends \backend\models\base\Admin implements IdentityInterface
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
-    /**
-     * @inheritdoc
-     */
-    public static function tableName()
+    public function attributeLabels()
     {
-        return '{{%admin}}';
+        return array_merge(parent::rules(),  [
+            'username' => '登录名',
+            'name' => '真实姓名',
+            'email' => '邮箱',
+        ]);
     }
 
     /**

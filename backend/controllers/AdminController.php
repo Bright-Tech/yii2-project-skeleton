@@ -47,10 +47,12 @@ class AdminController extends Controller
     {
         $searchModel = new searchAdmin();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $model = new Admin();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
+            'model' => $model
         ]);
     }
 

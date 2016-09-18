@@ -14,11 +14,11 @@ $this->params['breadcrumbs'][] = $this->title;
 <div class="admin-index">
 
 
-    <?php PageHeader::begin(['title'=>$this->title, 'subTitle'=>'test'])?>
-    <?= Html::a('<i class="ace-icon glyphicon glyphicon-plus"></i>添加管理员', ['create'], ['class' => 'btn btn-info btn-link pull-right']) ?>
+    <?php PageHeader::begin(['title'=>$this->title])?>
+    <?= Html::tag('button','<i class="ace-icon glyphicon glyphicon-plus"></i>添加管理员', ['class' => 'btn btn-info btn-link pull-right','id'=>'create-admin']) ?>
     <?php PageHeader::end()?>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?= $this->render('_form', ['model' => $model]); ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -79,3 +79,4 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]); ?>
 </div>
+
