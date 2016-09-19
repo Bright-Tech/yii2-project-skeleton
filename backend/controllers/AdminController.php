@@ -6,6 +6,7 @@ use Yii;
 use backend\models\Admin;
 use backend\models\search\searchAdmin;
 use yii\filters\AccessControl;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -30,12 +31,6 @@ class AdminController extends Controller
                     ]
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
-                'actions' => [
-                    'delete' => ['POST'],
-                ],
-            ],
         ];
     }
 
@@ -45,9 +40,24 @@ class AdminController extends Controller
      */
     public function actionIndex()
     {
+
+        $type = Yii::$app->request->get('type', 'create');
+        $id = Yii::$app->request->get('id', 0);
+        $model = null;
+        switch ($type) {
+            case 'create':
+                $model = $this->createModel();
+                break;
+            case 'update':
+                $model = $this->editModel($id);
+                break;
+            case 'delete':
+                $model = $this->deleteModel($id);
+                break;
+
+        }
         $searchModel = new searchAdmin();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $model = new Admin();
 
         return $this->render('index', [
             'searchModel' => $searchModel,
@@ -71,58 +81,24 @@ class AdminController extends Controller
     /**
      * Creates a new Admin model.
      * If creation is successful, the browser will be redirected to the 'view' page.
-     * @return mixed
+     * @return Admin
      */
-    public function actionCreate()
+    public function createModel()
     {
         $model = new Admin();
-
-        if ($model->load(Yii::$app->request->post()) && $model = $model->createAdmin()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-    /**
-     * Updates an existing Admin model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
-    {
-        $model = $this->findModel($id);
-
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
-        }
-    }
-
-
-    public function actionPassword($id)
-    {
-        $model=$this->findModel($id);
-        if (Yii::$app->request->isPost){
-            if(!Yii::$app->security->validatePassword(Yii::$app->request->post()['Admin']['password_old'],$model->password_hash)){
-                Yii::$app->session->setFlash('error', '旧密码输入错误');
-                return $this->render('password',['model'=>$model]);
-            }else{
-                $model->password_hash=Yii::$app->security->generatePasswordHash(Yii::$app->request->post()['Admin']['password_hash']);
-                $model->save();
-                Yii::$app->session->setFlash('success', '修改成功');
-                return $this->redirect(['index']);
+        $session = Yii::$app->session;
+        if (Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post());
+            $model->generateAuthKey();
+            $model->setPassword($model->password);
+            if ($model->save()) {
+                $session->addFlash('success', '管理员' . $model->name . '已创建');
+            } else {
+                $session->addFlash('error', '管理员创建失败');
             }
-        }else{
-            return $this->render('password',['model'=>$model]);
-        }
 
+        }
+        return $model;
     }
 
     /**
@@ -131,30 +107,66 @@ class AdminController extends Controller
      * @param integer $id
      * @return mixed
      */
-    public function actionProfile($id)
+    public function editModel($id)
     {
         $model = $this->findModel($id);
+        $session = Yii::$app->session;
+
+        if (Yii::$app->request->isPost) {
+            $model->load(Yii::$app->request->post());
+            if (!empty($model->password)){
+                $model->setPassword($model->password);
+            }
+            if ($model->save()) {
+                $session->addFlash('success', '管理员 ' . $model->name . ' 已更新');
+            } else {
+                $session->addFlash('error', '管理员更新失败');
+            }
+        }
+        return $model;
+    }
+
+
+
+    /**
+     * Updates an existing Admin model.
+     * If update is successful, the browser will be redirected to the 'view' page.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionProfile()
+    {
+        $id = Yii::$app->user->id;
+        $model = $this->findModel($id);
+        $session = Yii::$app->session;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('profile', [
-                'model' => $model,
-            ]);
+            $session->addFlash('success',  $model->name . ' 已更新');
         }
-
+        return $this->render('profile', [
+            'model' => $model,
+        ]);
     }
+
     /**
      * Deletes an existing Admin model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
      */
-    public function actionDelete($id)
+    public function deleteModel($id)
     {
-        $this->findModel($id)->delete();
+        $model = $this->findModel($id);
+        $session = Yii::$app->session;
 
-        return $this->redirect(['index']);
+        if($model->softDelete()){
+            $session->addFlash('success', $model->name . '已删除');
+        }else{
+            $session->addFlash('error', '删除失败');
+        }
+
+
+        return new Admin();
     }
 
     /**
@@ -169,7 +181,7 @@ class AdminController extends Controller
         if (($model = Admin::findOne($id)) !== null) {
             return $model;
         } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
+//            throw new NotFoundHttpException('The requested page does not exist.');
         }
     }
 }

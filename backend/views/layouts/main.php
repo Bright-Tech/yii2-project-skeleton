@@ -5,8 +5,9 @@ use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Url;
 use bright_tech\yii2theme\aceadmin\widgets\Breadcrumbs;
-use common\widgets\Alert;
+use bright_tech\yii2theme\aceadmin\widgets\Alert;
 use common\models\Property;
+use yii\widgets\Pjax;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
@@ -60,7 +61,7 @@ AppAsset::register($this);
                     <li class="light-blue">
                         <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                             <img class="nav-user-photo" src="../avatars/user.jpg" alt="Jason's Photo"/>
-                            <span class="user-info"> <small>你好,</small> <?= Yii::$app->user->identity->username ?> </span>
+                            <span class="user-info"> <small>你好,</small> <?= Yii::$app->user->identity->name ?> </span>
                         </a>
                         <ul
                             class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
@@ -101,8 +102,9 @@ AppAsset::register($this);
 
         <div class="main-content">
             <div class="main-content-inner">
-                <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [], 'class' => 'breadcrumbs breadcrumbs-fixed']) ?>
+                <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [], 'warpOptions' => ['class' => 'breadcrumbs breadcrumbs-fixed']]) ?>
                 <div class="page-content">
+                    <?php \yii\widgets\Pjax::begin(['enablePushState' => false]) ?>
                     <div class="row">
                         <div class="col-xs-12">
                             <?= Alert::widget(); ?>
@@ -113,6 +115,7 @@ AppAsset::register($this);
                             <!-- PAGE CONTENT BEGINS -->
                             <?= $content ?>
                             <!-- PAGE CONTENT ENDS -->
+                            <?php Pjax::end() ?>
                         </div>
                     </div>
                 </div>

@@ -56,6 +56,19 @@ return [
         'authManager' => [
             'class' => 'yii\rbac\DbManager',
         ],
+        'assetManager' => [
+            'bundles' => [
+                'edgardmessias\assets\nprogress\NProgressAsset' => [
+                    'configuration' => [
+                        'minimum' => 0.08,
+                        'showSpinner' => true,
+                    ],
+                    'page_loading' => true,
+                    'pjax_events' => true,
+                    'jquery_ajax_events' => true,
+                ],
+            ],
+        ],
     ],
     'params' => $params,
 ];

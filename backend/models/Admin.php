@@ -9,30 +9,27 @@ use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
- * User model
+ * Admin model
  *
- * @property integer $id
- * @property string $username
- * @property string $password_hash
- * @property string $password_reset_token
- * @property string $email
- * @property string $auth_key
- * @property integer $status
- * @property integer $created_at
- * @property integer $updated_at
- * @property string $password write-only password
+ * @property string $password  password
+ * @property string $repeatPassword  repeat password
  */
 class Admin extends \backend\models\base\Admin implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
 
+    public $password;
+    public $repeatPassword;
+
     public function attributeLabels()
     {
-        return array_merge(parent::rules(),  [
+        return array_merge(parent::rules(), [
             'username' => '登录名',
             'name' => '真实姓名',
             'email' => '邮箱',
+            'password' => '密码',
+            'repeatPassword' => '确认密码',
         ]);
     }
 
@@ -46,7 +43,7 @@ class Admin extends \backend\models\base\Admin implements IdentityInterface
             'softDeleteBehavior' => [
                 'class' => SoftDeleteBehavior::className(),
                 'softDeleteAttributeValues' => [
-                    'isDeleted' => true
+                    'is_deleted' => 1
                 ],
             ],
         ];
@@ -57,10 +54,27 @@ class Admin extends \backend\models\base\Admin implements IdentityInterface
      */
     public function rules()
     {
-        return array_merge(parent::rules(),  [
+
+        return [
+            [['username', 'auth_key', 'password_hash', 'name', 'email'], 'required'],
+            [['status', 'created_at', 'updated_at', 'is_deleted'], 'integer'],
+            [['username', 'password_hash', 'password_reset_token', 'name', 'email'], 'string', 'max' => 255],
+            [['auth_key'], 'string', 'max' => 32],
+            [['username'], 'unique'],
+            [['email'], 'unique'],
+            [['password_reset_token'], 'unique'],
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
-        ]);
+            ['password', 'compare', 'compareAttribute' => 'repeatPassword'],
+            [['password', 'repeatPassword'], 'required',
+                'when' => function ($model) {
+                    return $model->isNewRecord;
+                },
+                'whenClient' => "function (attribute, value) {
+                    return $('#admin-id').val() == '';
+                }"
+            ],
+        ];
     }
 
     /**
@@ -121,7 +135,7 @@ class Admin extends \backend\models\base\Admin implements IdentityInterface
         }
         $expire = Yii::$app->params['user.passwordResetTokenExpire'];
         $parts = explode('_', $token);
-        $timestamp = (int) end($parts);
+        $timestamp = (int)end($parts);
         return $timestamp + $expire >= time();
     }
 
@@ -167,6 +181,7 @@ class Admin extends \backend\models\base\Admin implements IdentityInterface
      */
     public function setPassword($password)
     {
+        $this->password = $password;
         $this->password_hash = Yii::$app->security->generatePasswordHash($password);
     }
 
@@ -194,18 +209,14 @@ class Admin extends \backend\models\base\Admin implements IdentityInterface
         $this->password_reset_token = null;
     }
 
-    public static function getuserStatus(){
-        return array('0'=>'潜水','10'=>'正常');
+    public static function getuserStatus()
+    {
+        return array('0' => '潜水', '10' => '正常');
     }
 
-    public function createAdmin(){
-        $this->generateAuthKey();
-        $model=$this->save();
-        return $model?$model:false;
-    }
 
-    /**
-     * @param \yii\validators\Validator[] $activeValidators
-     */
-   
+    public static function find()
+    {
+        return parent::find()->where(['is_deleted' => 0]);
+    }
 }

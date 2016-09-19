@@ -1,6 +1,7 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
 use yii\grid\GridView;
 use bright_tech\yii2theme\aceadmin\widgets\PageHeader;
 
@@ -10,13 +11,14 @@ use bright_tech\yii2theme\aceadmin\widgets\PageHeader;
 
 $this->title = '管理员设置';
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="admin-index">
 
 
-    <?php PageHeader::begin(['title'=>$this->title])?>
-    <?= Html::tag('button','<i class="ace-icon glyphicon glyphicon-plus"></i>添加管理员', ['class' => 'btn btn-info btn-link pull-right','id'=>'create-admin']) ?>
-    <?php PageHeader::end()?>
+    <?php PageHeader::begin(['title' => $this->title]) ?>
+    <?= Html::tag('button', '<i class="ace-icon glyphicon glyphicon-plus"></i>添加管理员', ['class' => 'btn btn-info btn-link pull-right', 'id' => 'create-admin', 'data-target' => 'form-widget-box']) ?>
+    <?php PageHeader::end() ?>
 
     <?= $this->render('_form', ['model' => $model]); ?>
 
@@ -25,56 +27,33 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-//            'id',
-//            'username',
+            'username',
+            'name',
+            'email:email',
             [
-                'attribute'=>'username',
-                'label'=>'登录名'
-            ],
-            [
-                'attribute'=>'name',
-                'label'=>'昵称'
-            ],
-//            'auth_key',
-//            'password_hash',
-//            'password_reset_token',
-////             'name',
-//             'email:email',
-            [
-                'attribute'=>'email',
-                'label'=>'用户邮箱'
-            ],
-            [
-                'attribute'=>'status',
-                'label'=>'用户状态',
-                'value'=>function($model){
-                    return \Yii::t('backend', 'UserStatus:'.$model->status);
+                'attribute' => 'status',
+                'label' => '用户状态',
+                'value' => function ($model) {
+                    return \Yii::t('backend', 'UserStatus:' . $model->status);
                 },
-                'filter'=>\backend\models\Admin::getuserStatus(),
+                'filter' => \backend\models\Admin::getuserStatus(),
             ],
-//             'status',
 
             [
-                'attribute'=>'created_at',
-                'format'=>['datetime'],
+                'attribute' => 'created_at',
+                'format' => ['datetime'],
             ],
 
-
-            // 'is_deleted',
-
-            ['class' => 'yii\grid\ActionColumn','template' => ' {view}{update} {password}{delete}',
-            'buttons'=>[
-                'password'=>function ($url, $model, $key) {
-                    $options = [
-                        'title' => Yii::t('yii', '修改用户密码'),
-                        'aria-label' => Yii::t('yii', '修改用户密码'),
-                        'data-pjax' => '0',
-                    ];
-                    return Html::a('<span class="glyphicon glyphicon-cog"></span>',$url,$options);
-//                                    '<a class="glyphicon glyphicon-qrcode" data-toggle="modal" data-target="#myModal"></a>';
-                }
-            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'buttonOptions' => ['data-pjax' => 1],
+                'template' => ' {view}{update}{delete}',
+                'urlCreator' => function ($action, $model, $key, $index) {
+                    $params = is_array($key) ? $key : ['id' => (string)$key];
+                    $params[0] = 'admin/index';
+                    $params['type'] = $action;
+                    return Url::toRoute($params);
+                },
             ],
         ],
     ]); ?>

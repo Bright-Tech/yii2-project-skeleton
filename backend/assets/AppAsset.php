@@ -15,10 +15,12 @@ class AppAsset extends AssetBundle
         'css/site.css',
     ];
     public $js = [
+        'js/default.js'
     ];
     public $depends = [
         'yii\web\YiiAsset',
         'yii\bootstrap\BootstrapAsset',
-        'bright_tech\yii2theme\aceadmin\AceAdminAsset'
+        'bright_tech\yii2theme\aceadmin\AceAdminAsset',
+        'edgardmessias\assets\nprogress\NProgressAsset'
     ];
 }
