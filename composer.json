@@ -21,7 +21,8 @@
         "yii2tech/ar-softdelete": "*",
         "yii2tech/install": "*",
         "bright-tech/yii2-ace-admin-theme": "dev-master",
-        "edgardmessias/yii2-nprogress": "*"
+        "edgardmessias/yii2-nprogress": "*",
+        "bright-tech/yii2-adminlte-theme": "*"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "*",

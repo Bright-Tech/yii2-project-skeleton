@@ -12,7 +12,7 @@ class m160902_081728_create_organization_table extends Migration
      */
     public function up()
     {
-        $this->createTable('bgt_organization', [
+        $this->createTable('{{%organization}}', [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull()->comment('名称'),
             'province_id' => $this->integer()->comment('省份ID'),
@@ -34,6 +34,6 @@ class m160902_081728_create_organization_table extends Migration
      */
     public function down()
     {
-        $this->dropTable('bgt_organization');
+        $this->dropTable('{{%organization}}');
     }
 }
